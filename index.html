@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>HSL License Center · Admin</title>
+  <style>
+    :root{
+      --ink:#172033;--muted:#778196;--line:#e6eaf1;--paper:#f5f7fb;--white:#fff;
+      --nav:#111827;--nav2:#1b2435;--blue:#5667ed;--blue2:#7887ff;--cyan:#27b5c7;
+      --green:#15956f;--red:#d84e61;--amber:#b7791f;--shadow:0 14px 40px rgba(27,39,67,.08);
+      --radius:17px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,"Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--paper)}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    .hidden{display:none!important}
+    .login-shell{min-height:100vh;display:grid;grid-template-columns:minmax(320px,1.03fr) minmax(360px,.97fr);background:#111827}
+    .login-art{padding:54px clamp(28px,6vw,92px);position:relative;overflow:hidden;color:#f7f8ff;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 78% 23%,rgba(103,119,255,.38),transparent 27%),radial-gradient(circle at 25% 83%,rgba(39,181,199,.22),transparent 30%),linear-gradient(140deg,#111827 0%,#1b2540 64%,#202850 100%)}
+    .login-art:before,.login-art:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.13);border-radius:50%;width:430px;height:430px;right:-120px;top:22%;box-shadow:0 0 0 38px rgba(255,255,255,.025),0 0 0 78px rgba(255,255,255,.02)}
+    .login-art:after{width:180px;height:180px;right:11%;top:35%;border-color:rgba(112,131,255,.4);box-shadow:0 0 80px rgba(93,112,255,.3),inset 0 0 55px rgba(93,112,255,.12)}
+    .brand-lockup{display:flex;align-items:center;gap:13px;position:relative;z-index:1}
+    .brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#7b8bff,#46c5d1);display:grid;place-items:center;color:white;font-weight:850;letter-spacing:-2px;box-shadow:0 8px 25px rgba(86,103,237,.32)}
+    .brand-name{font-size:14px;letter-spacing:.16em;font-weight:800}.brand-sub{font-size:10px;color:#9ba8c1;letter-spacing:.22em;margin-top:4px}
+    .art-copy{position:relative;z-index:1;max-width:560px;margin:68px 0}
+    .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#8fa2ff;font-weight:800}
+    .art-copy h1{font-size:clamp(36px,5vw,66px);line-height:1.08;letter-spacing:-.055em;margin:20px 0 18px;font-weight:780}
+    .art-copy p{font-size:14px;line-height:1.9;color:#acb7cc;max-width:420px}
+    .art-foot{position:relative;z-index:1;color:#75839d;font-size:11px;letter-spacing:.08em}
+    .login-panel{background:#f6f7fb;display:flex;justify-content:center;align-items:center;padding:34px}
+    .login-card{width:min(440px,100%);background:white;border:1px solid #e9edf4;border-radius:23px;padding:36px;box-shadow:0 24px 70px rgba(20,30,55,.12)}
+    .login-card h2{font-size:25px;margin:0 0 8px;letter-spacing:-.03em}.login-card .sub{color:var(--muted);font-size:13px;line-height:1.7;margin:0 0 27px}
+    .field{display:flex;flex-direction:column;gap:8px;margin:15px 0}.field label{font-size:12px;font-weight:750;color:#4d5870}.field input,.field select,.field textarea,.toolbar input,.toolbar select{width:100%;border:1px solid #dfe4ee;background:#fff;border-radius:10px;padding:12px 13px;color:var(--ink);outline:none;transition:.18s}
+    .field input:focus,.field select:focus,.field textarea:focus,.toolbar input:focus,.toolbar select:focus{border-color:#8490ff;box-shadow:0 0 0 3px rgba(86,103,237,.11)}
+    .field small{font-size:11px;color:#929bad;line-height:1.6}.primary{background:linear-gradient(135deg,var(--blue),#6979f4);color:#fff;border:0;border-radius:10px;padding:12px 17px;font-weight:750;box-shadow:0 7px 16px rgba(86,103,237,.18);transition:transform .15s,filter .15s}.primary:hover{filter:brightness(1.05);transform:translateY(-1px)}
+    .primary:disabled,.btn:disabled{opacity:.48;cursor:not-allowed;transform:none;box-shadow:none}
+    .login-submit{width:100%;margin-top:12px;padding:14px}.login-tip{margin-top:18px;padding:12px 13px;border-radius:10px;background:#f4f6ff;color:#69749a;font-size:11px;line-height:1.65}
+    .app-shell{min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr)}
+    .sidebar{background:var(--nav);color:#e8ecf7;padding:25px 17px 18px;display:flex;flex-direction:column;min-height:100vh;position:sticky;top:0;height:100vh}
+    .side-brand{padding:0 10px 30px;display:flex;align-items:center;gap:11px}.side-brand .brand-mark{width:38px;height:38px;border-radius:12px}.side-brand .brand-name{font-size:12px;letter-spacing:.12em}.side-brand .brand-sub{font-size:9px}
+    .nav-label{font-size:9px;letter-spacing:.19em;color:#64718b;padding:12px 12px 9px;font-weight:800}
+    .nav-btn{width:100%;border:0;background:transparent;color:#9ca8bd;padding:12px 13px;border-radius:11px;text-align:left;display:flex;align-items:center;gap:12px;font-size:12px;font-weight:650;margin:3px 0;transition:.15s}
+    .nav-btn:hover{background:rgba(255,255,255,.055);color:#fff}.nav-btn.active{background:linear-gradient(100deg,rgba(91,108,240,.28),rgba(91,108,240,.1));color:#fff;box-shadow:inset 2px 0 #7d8aff}.nav-icon{width:18px;text-align:center;font-size:15px;opacity:.95}
+    .side-bottom{margin-top:auto;padding:17px 9px 0;border-top:1px solid rgba(255,255,255,.08)}.connection{font-size:10px;color:#8995aa;display:flex;align-items:center;gap:8px;margin-bottom:16px}.dot{width:7px;height:7px;border-radius:100%;background:#36c59c;box-shadow:0 0 0 4px rgba(54,197,156,.1)}
+    .user-mini{display:flex;align-items:center;gap:10px}.avatar{width:32px;height:32px;border-radius:10px;background:#293553;color:#cbd4ff;display:grid;place-items:center;font-size:12px;font-weight:800}.user-mini strong{display:block;font-size:11px}.user-mini span{font-size:9px;color:#8190a8}
+    .main{min-width:0}.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,4vw,52px);background:rgba(255,255,255,.78);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+    .crumb{font-size:12px;color:#9aa3b4}.crumb b{color:#3c465c;font-weight:750}.top-actions{display:flex;align-items:center;gap:10px}.top-status{font-size:10px;color:#8490a3;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .content{padding:34px clamp(20px,4vw,52px) 55px;max-width:1600px;margin:0 auto}.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:25px}.page-kicker{font-size:10px;color:var(--blue);letter-spacing:.18em;font-weight:850;text-transform:uppercase}.page-head h1{font-size:29px;letter-spacing:-.045em;margin:7px 0 5px}.page-head p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}.page-actions{display:flex;gap:9px;flex-wrap:wrap}
+    .btn{border:1px solid #dfe4ed;border-radius:9px;background:#fff;color:#45506a;padding:10px 13px;font-size:11px;font-weight:750;transition:.15s}.btn:hover{border-color:#aeb8cc;background:#fafbff}.btn.danger{color:var(--red);border-color:#f1d7dc}.btn.small{padding:7px 9px;font-size:10px;border-radius:8px}.btn.primary-outline{color:var(--blue);border-color:#cfd5ff;background:#f8f8ff}
+    .grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}.stat-card,.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 3px 12px rgba(27,39,67,.025)}.stat-card{padding:19px 20px;position:relative;overflow:hidden}.stat-card:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-34px;top:-36px;background:var(--tint,#eef0ff)}.stat-top{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.stat-label{font-size:11px;color:#8791a4;font-weight:650}.stat-symbol{width:29px;height:29px;border-radius:9px;background:var(--tint,#eef0ff);color:var(--tone,var(--blue));display:grid;place-items:center;font-size:13px}.stat-value{font-size:29px;font-weight:800;letter-spacing:-.05em;margin-top:15px;position:relative;z-index:1}.stat-note{font-size:10px;color:#a0a9b8;margin-top:3px;position:relative;z-index:1}
+    .dashboard-grid{grid-template-columns:minmax(0,1.4fr) minmax(260px,.8fr)}.panel{padding:20px}.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:15px}.panel-title{font-size:13px;font-weight:800}.panel-sub{font-size:10px;color:#99a2b2;margin-top:4px}.status-bars{display:grid;gap:15px}.bar-row{display:grid;grid-template-columns:80px minmax(0,1fr) 34px;gap:12px;align-items:center;font-size:11px;color:#6f7a90}.bar-track{height:8px;border-radius:20px;background:#f0f2f7;overflow:hidden}.bar-fill{height:100%;width:0;border-radius:20px;background:linear-gradient(90deg,#6576f5,#8d9bff)}.bar-row:nth-child(2) .bar-fill{background:linear-gradient(90deg,#25a98d,#70d1b4)}.bar-row:nth-child(3) .bar-fill{background:linear-gradient(90deg,#e0a44c,#f3c77f)}.bar-row:nth-child(4) .bar-fill{background:linear-gradient(90deg,#d75f70,#f09ba5)}
+    .quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.quick-card{padding:14px;border:1px solid #e9edf5;border-radius:12px;background:#fbfcff;text-align:left;color:#43506a}.quick-card:hover{border-color:#bdc6ff;background:#f8f9ff}.quick-card i{font-style:normal;font-size:18px;display:block;margin-bottom:12px}.quick-card b{font-size:11px;display:block}.quick-card span{display:block;font-size:9px;color:#929caf;margin-top:5px}
+    .toolbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:15px}.toolbar input{width:min(260px,100%);padding:9px 11px;font-size:11px}.toolbar select{width:auto;min-width:120px;padding:9px 11px;font-size:11px}.toolbar .spacer{flex:1}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:750px}th{background:#f8f9fc;color:#8b95a7;text-align:left;font-size:9px;font-weight:800;letter-spacing:.06em;padding:12px 13px;white-space:nowrap}td{padding:13px;border-top:1px solid #eef1f5;font-size:10px;color:#59657a;white-space:nowrap}tbody tr:hover{background:#fbfcff}.code-cell{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#37425b;font-weight:750}.status-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border-radius:30px;font-size:9px;font-weight:800;background:#f1f3f7;color:#68748a}.status-pill:before{content:"";width:5px;height:5px;border-radius:50%;background:currentColor}.status-pill.active{color:#148565;background:#e9f7f1}.status-pill.unused{color:#6473db;background:#eef0ff}.status-pill.disabled{color:#c24d61;background:#fff0f2}.status-pill.expired{color:#b7791f;background:#fff6e7}.row-actions{display:flex;gap:5px}.empty{padding:44px 16px;text-align:center;color:#9aa3b3;font-size:11px}.pagination{display:flex;justify-content:space-between;align-items:center;padding-top:13px;color:#909bad;font-size:10px}.pagination .btn{padding:7px 10px}
+    .notice{border:1px solid #dfe5ff;background:#f5f6ff;padding:13px 15px;border-radius:11px;color:#63709c;font-size:10px;line-height:1.7;margin-bottom:15px}.notice strong{color:#4657c8}.notice.warn{border-color:#f1e1c8;background:#fffaf1;color:#957344}.notice.success{border-color:#cfe9df;background:#f2fbf7;color:#39876f}
+    .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.product-card{padding:18px;border:1px solid var(--line);border-radius:14px;background:#fff}.product-top{display:flex;justify-content:space-between;gap:12px}.product-code{font:800 12px ui-monospace,monospace;color:var(--blue);letter-spacing:.08em}.product-card h3{font-size:16px;margin:10px 0 6px}.product-card p{font-size:11px;color:#7d8799;line-height:1.7;min-height:38px;margin:0 0 15px}.product-meta{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #eef1f5;padding-top:12px;font-size:9px;color:#9aa3b2}
+    .log-action{font:750 10px ui-monospace,monospace;color:#5363d6}.settings-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.settings-item{border:1px solid var(--line);border-radius:13px;padding:17px}.settings-item h3{font-size:12px;margin:0 0 7px}.settings-item p{font-size:10px;color:#8c96a7;line-height:1.7;margin:0 0 12px}.code-block{padding:12px;border-radius:9px;background:#f5f6fa;color:#536078;font:10px ui-monospace,monospace;overflow-wrap:anywhere}
+    dialog{border:0;border-radius:18px;padding:0;width:min(560px,calc(100vw - 28px));box-shadow:0 30px 100px rgba(15,23,42,.28);color:var(--ink)}dialog::backdrop{background:rgba(13,20,36,.55);backdrop-filter:blur(4px)}.modal-head{padding:21px 23px 14px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}.modal-head h3{font-size:15px;margin:0}.modal-body{padding:20px 23px 23px}.modal-foot{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}.modal-close{border:0;background:#f2f4f8;border-radius:8px;width:28px;height:28px;color:#7e899c;font-size:17px}.generated-list{display:grid;gap:8px;margin-top:14px}.generated-code{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border:1px solid #dce3ff;border-radius:9px;background:#f7f8ff}.generated-code code{font:750 12px ui-monospace,monospace;letter-spacing:.08em;color:#4658cf}.toast{position:fixed;right:24px;bottom:24px;z-index:30;background:#172033;color:white;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);font-size:11px;max-width:min(380px,calc(100vw - 48px));opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}.toast.error{background:#9e3448}
+    .loading{opacity:.55;pointer-events:none}.mobile-nav{display:none}
+    @media(max-width:1050px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid{grid-template-columns:1fr}.app-shell{grid-template-columns:218px minmax(0,1fr)}.sidebar{padding-left:12px;padding-right:12px}}
+    @media(max-width:760px){.login-shell{grid-template-columns:1fr}.login-art{min-height:260px;padding:27px 25px}.art-copy{margin:35px 0 20px}.art-copy h1{font-size:37px}.art-copy p{font-size:12px}.art-foot{display:none}.login-panel{padding:22px}.login-card{padding:27px 23px}.app-shell{display:block}.sidebar{position:relative;height:auto;min-height:0;padding:12px 14px;display:block}.side-brand{padding:0 4px 11px}.sidebar .nav-label,.sidebar .side-bottom{display:none}#sideNav{display:flex;gap:6px;overflow:auto;padding:0 0 4px}#sideNav .nav-btn{width:auto;white-space:nowrap;padding:9px 11px;font-size:10px;margin:0;flex:0 0 auto}#sideNav .nav-icon{display:none}.topbar{height:58px;padding:0 17px}.top-status{display:none}.content{padding:25px 15px 40px}.page-head{align-items:flex-start;flex-direction:column}.page-head h1{font-size:25px}.page-actions{width:100%}.stats{gap:9px}.stat-card{padding:14px}.stat-value{font-size:25px}.stat-label{font-size:10px}.product-grid,.settings-grid{grid-template-columns:1fr}.panel{padding:15px}.toolbar{align-items:stretch}.toolbar input{width:100%}.toolbar select{flex:1}.toolbar .spacer{display:none}}
+    @media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.stat-card{padding:12px}.stat-value{font-size:22px}.login-card h2{font-size:22px}}
+  </style>
+</head>
+<body>
+  <section id="loginView" class="login-shell">
+    <div class="login-art">
+      <div class="brand-lockup"><div class="brand-mark">H</div><div><div class="brand-name">HUMAN SLICE LABORATORY</div><div class="brand-sub">LICENSE CENTER / ADMIN</div></div></div>
+      <div class="art-copy"><div class="eyebrow">CONTROL PANEL · 01</div><h1>权限有序，<br>体验有界。</h1><p>统一管理 HSL 产品授权、设备绑定与后台操作记录。所有关键操作均由 CloudBase 服务端校验权限。</p></div>
+      <div class="art-foot">HSL LICENSE CENTER &nbsp;·&nbsp; PRIVATE OPERATIONS</div>
+    </div>
+    <div class="login-panel">
+      <form id="loginForm" class="login-card">
+        <div class="eyebrow">WELCOME BACK</div><h2>管理员登录</h2><p class="sub">使用已在 CloudBase 身份认证中创建，并已加入 HSL 管理员列表的账号登录。</p>
+        <div class="field"><label for="apiBaseInput">授权 API 地址</label><div style="display:flex;gap:8px"><input id="apiBaseInput" type="url" autocomplete="url" spellcheck="false" required><button id="testApiButton" class="btn" type="button" style="white-space:nowrap">测试连接</button></div><small>默认地址已预填。若你的 HTTP 云函数映射路径不同，可在这里修改。</small></div>
+        <div class="field"><label for="usernameInput">CloudBase 登录账号</label><input id="usernameInput" name="username" autocomplete="username" placeholder="用户名 / 登录账号" required></div>
+        <div class="field"><label for="passwordInput">密码</label><input id="passwordInput" name="password" type="password" autocomplete="current-password" placeholder="输入 CloudBase 登录密码" required></div>
+        <button id="loginButton" class="primary login-submit" type="submit">登录管理后台 <span aria-hidden="true">↗</span></button>
+        <div id="loginMessage" class="login-tip">安全提示：页面不会保存密码或将管理员 Token 写入公开仓库。登录后 Token 仅保留在当前页面内存中。</div>
+      </form>
+    </div>
+  </section>
+
+  <section id="appView" class="app-shell hidden">
+    <aside class="sidebar">
+      <div class="side-brand"><div class="brand-mark">H</div><div><div class="brand-name">HUMAN SLICE LAB</div><div class="brand-sub">LICENSE CENTER</div></div></div>
+      <div class="nav-label">WORKSPACE</div>
+      <nav id="sideNav">
+        <button class="nav-btn active" data-page="dashboard"><span class="nav-icon">◫</span>总览仪表盘</button>
+        <button class="nav-btn" data-page="licenses"><span class="nav-icon">▤</span>授权码管理</button>
+        <button class="nav-btn" data-page="products"><span class="nav-icon">◈</span>产品管理</button>
+        <button class="nav-btn" data-page="logs"><span class="nav-icon">≋</span>操作日志</button>
+        <button class="nav-btn" data-page="settings"><span class="nav-icon">⚙</span>连接与安全</button>
+      </nav>
+      <div class="side-bottom"><div class="connection"><span class="dot"></span> API 服务连接正常</div><div class="user-mini"><div class="avatar" id="userAvatar">H</div><div><strong id="sideUserName">HSL Admin</strong><span id="sideUserRole">OWNER</span></div></div></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="crumb">HSL / <b id="crumbPage">总览仪表盘</b></div><div class="top-actions"><span class="top-status" id="topRole">OWNER ACCESS</span><button class="btn small" id="logoutButton">退出登录 ↗</button></div></header>
+      <div id="pageContent" class="content"></div>
+    </main>
+  </section>
+  <dialog id="modal"><div id="modalContent"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+  const ENV_ID = 'hsl-license-center-d1cevc473fb82';
+  const CLOUD_BASE = `https://${ENV_ID}.api.tcloudbasegateway.com`;
+  const DEFAULT_API_BASE = `${CLOUD_BASE}/hsl-api`;
+  const STORAGE_KEY = 'hsl_admin_api_base_v1';
+  const state = { token: null, admin: null, apiBase: '', page: 'dashboard', licenses: [], products: [], logs: [], licensePage: 1, licenseTotal: 0, logPage: 1, logTotal: 0, filters: {status:'',hint:'',product_code:''}, stats: null };
+  const $ = (id) => document.getElementById(id);
+  const pageNames = {dashboard:'总览仪表盘',licenses:'授权码管理',products:'产品管理',logs:'操作日志',settings:'连接与安全'};
+  const modal = $('modal');
+  let toastTimer;
+
+  function esc(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function cleanBase(value) { return String(value || '').trim().replace(/\/+$/, ''); }
+  function dateText(value) {
+    if (!value) return '—';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return '—';
+    return new Intl.DateTimeFormat('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(d);
+  }
+  function isExpired(value) { return !!value && Date.parse(value) <= Date.now(); }
+  function statusInfo(row) {
+    if (row.status !== 'disabled' && isExpired(row.expires_at)) return {label:'已过期',cls:'expired'};
+    const map = {active:['已激活','active'],unused:['未激活','unused'],disabled:['已禁用','disabled']};
+    const item = map[row.status] || [row.status || '未知',''];
+    return {label:item[0],cls:item[1]};
+  }
+  function toast(message, type='') {
+    const el = $('toast'); el.textContent = message; el.className = `toast show ${type}`;
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.className = 'toast', 2800);
+  }
+  function setLoginMessage(message, isError=false) {
+    const el = $('loginMessage'); el.textContent = message; el.style.color = isError ? '#b84b5d' : '';
+  }
+  function setBusy(button, busy, text) {
+    if (!button) return;
+    if (busy) { button.dataset.originalText = button.textContent; button.disabled = true; if (text) button.textContent = text; }
+    else { button.disabled = false; if (button.dataset.originalText) button.textContent = button.dataset.originalText; }
+  }
+  async function readResponse(response) {
+    const raw = await response.text();
+    let data = null;
+    if (raw) { try { data = JSON.parse(raw); } catch { data = {message:raw.slice(0,500)}; } }
+    if (!response.ok) {
+      const msg = data?.message || data?.error_description || data?.error || `HTTP ${response.status}`;
+      const err = new Error(String(msg)); err.status = response.status; err.data = data; throw err;
+    }
+    return data || {};
+  }
+  async function api(path, options={}) {
+    if (!state.apiBase) throw new Error('请先配置 API 地址');
+    const headers = { 'Accept':'application/json' };
+    if (state.token) headers.Authorization = `Bearer ${state.token}`;
+    if (options.body !== undefined) headers['Content-Type'] = 'application/json';
+    const response = await fetch(`${state.apiBase}${path}`, { method:options.method || 'GET', headers, body:options.body !== undefined ? JSON.stringify(options.body) : undefined, cache:'no-store' });
+    return readResponse(response);
+  }
+  function authErrorMessage(error) {
+    if (error instanceof TypeError) return '无法连接认证服务。请检查网络、CloudBase 安全来源域名及浏览器控制台中的 CORS 错误。';
+    return error.message || '登录失败';
+  }
+  async function signIn(username, password) {
+    const response = await fetch(`${CLOUD_BASE}/auth/v1/signin`, {
+      method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({username,password}), cache:'no-store'
+    });
+    return readResponse(response);
+  }
+  async function login(event) {
+    event.preventDefault();
+    const button = $('loginButton');
+    const username = $('usernameInput').value.trim();
+    const password = $('passwordInput').value;
+    state.apiBase = cleanBase($('apiBaseInput').value);
+    if (!/^https:\/\//i.test(state.apiBase)) { setLoginMessage('API 地址必须以 https:// 开头。',true); return; }
+    localStorage.setItem(STORAGE_KEY,state.apiBase);
+    setBusy(button,true,'正在验证账号…'); setLoginMessage('正在连接 CloudBase 身份认证服务…');
+    try {
+      const auth = await signIn(username,password);
+      const token = auth.access_token || auth.data?.access_token;
+      if (!token) throw new Error('认证服务未返回 access_token，请检查 CloudBase 登录配置。');
+      state.token = token;
+      setLoginMessage('登录凭证已取得，正在检查 HSL 管理员权限…');
+      const profile = await api('/api/admin/me');
+      if (!profile.success || !profile.uid) throw new Error(profile.message || '管理员身份检查失败');
+      state.admin = profile;
+      $('passwordInput').value = '';
+      enterApp();
+      await loadPage('dashboard');
+      toast(`欢迎回来，${profile.display_name || '管理员'}`);
+    } catch (error) {
+      state.token = null; state.admin = null;
+      setLoginMessage(`${authErrorMessage(error)}${error.status === 403 ? ' 当前账号可能尚未加入 admin_users 或已被停用。' : ''}`,true);
+    } finally { setBusy(button,false); }
+  }
+  function enterApp() {
+    $('loginView').classList.add('hidden'); $('appView').classList.remove('hidden');
+    const display = state.admin.display_name || 'HSL Admin';
+    $('sideUserName').textContent = display; $('userAvatar').textContent = display.trim().slice(0,1).toUpperCase();
+    $('sideUserRole').textContent = String(state.admin.role || 'ADMIN').toUpperCase();
+    $('topRole').textContent = state.admin.isOwner ? 'OWNER ACCESS' : 'ADMIN · READ / LIMITED';
+    document.querySelector('.connection').innerHTML = '<span class="dot"></span> API 服务连接正常';
+  }
+  async function logout() {
+    state.token = null; state.admin = null; state.stats = null;
+    $('appView').classList.add('hidden'); $('loginView').classList.remove('hidden');
+    $('passwordInput').value = ''; setLoginMessage('已退出当前管理会话。Token 已从页面内存中清除。');
+    toast('已退出登录');
+  }
+  function ownerOnly() { return !!state.admin?.isOwner; }
+  function ownerNotice() { return ownerOnly() ? '' : '<div class="notice warn">当前账号具备管理员读取权限，但不是 owner。生成、禁用、恢复、重置及产品写入操作由服务端限制为 owner。</div>'; }
+  function pageHead(kicker,title,desc,actions='') {
+    return `<div class="page-head"><div><div class="page-kicker">${kicker}</div><h1>${title}</h1><p>${desc}</p></div><div class="page-actions">${actions}</div></div>`;
+  }
+  function statCard(label,value,note,symbol,tint,tone) {
+    return `<div class="stat-card" style="--tint:${tint};--tone:${tone}"><div class="stat-top"><span class="stat-label">${label}</span><span class="stat-symbol">${symbol}</span></div><div class="stat-value">${value ?? '—'}</div><div class="stat-note">${note}</div></div>`;
+  }
+  async function loadPage(page) {
+    state.page = page;
+    document.querySelectorAll('.nav-btn[data-page]').forEach(btn => btn.classList.toggle('active',btn.dataset.page === page));
+    $('crumbPage').textContent = pageNames[page] || page;
+    $('pageContent').innerHTML = '<div class="panel empty">正在加载数据…</div>';
+    try {
+      if (page === 'dashboard') { const data = await api('/api/admin/dashboard'); state.stats = data.stats || {}; renderDashboard(); }
+      if (page === 'licenses') { await loadLicenses(); renderLicenses(); }
+      if (page === 'products') { const data = await api('/api/admin/products'); state.products = data.products || []; renderProducts(); }
+      if (page === 'logs') { await loadLogs(); renderLogs(); }
+      if (page === 'settings') renderSettings();
+    } catch (error) { renderLoadError(error); }
+  }
+  function renderLoadError(error) {
+    $('pageContent').innerHTML = `<div class="notice warn"><strong>数据加载失败：</strong>${esc(error.message)}${error.status === 401 ? ' 登录凭证可能已过期，请退出后重新登录。' : ''}</div><button class="btn" id="retryLoad">重新加载</button>`;
+    $('retryLoad')?.addEventListener('click',() => loadPage(state.page));
+    if (error.status === 401) toast('登录凭证已失效，请重新登录','error');
+  }
+  function renderDashboard() {
+    const s = state.stats || {};
+    const total = Number(s.totalLicenses || 0), active = Number(s.activeLicenses || 0), unused = Number(s.unusedLicenses || 0), disabled = Number(s.disabledLicenses || 0), expired = Number(s.expiredLicenses || 0);
+    const max = Math.max(total,1);
+    $('pageContent').innerHTML = pageHead('OVERVIEW / 01','总览仪表盘','查看授权库存、当前激活情况与产品运行状态。',`<button class="btn" data-action="refresh-page">↻ 刷新数据</button><button class="primary" data-action="open-generate" ${ownerOnly()?'':'disabled'}>＋ 生成授权码</button>`)+
+      `<div class="grid stats">${statCard('授权码总量',total,'累计创建的授权记录','▤','#eef0ff','#5667ed')}${statCard('已激活',active,'当前处于 active 状态','●','#e8f7f1','#15956f')}${statCard('待激活',unused,'尚未绑定设备','◌','#edf5ff','#3982c6')}${statCard('已禁用 / 已过期',`${disabled} / ${expired}`,'禁用记录与到期记录','◷','#fff4e7','#b7791f')}</div>`+
+      `<div class="grid dashboard-grid"><section class="panel"><div class="panel-head"><div><div class="panel-title">授权状态分布</div><div class="panel-sub">服务端独立统计维度 · 已过期可能与 active 状态重叠</div></div><span class="status-pill active">LIVE DATA</span></div><div class="status-bars">${[['已激活',active],['待激活',unused],['已禁用',disabled],['已过期',expired]].map(([label,value])=>`<div class="bar-row"><span>${label}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,(value/max)*100)}%"></div></div><b>${value}</b></div>`).join('')}</div><div class="panel-sub" style="margin-top:18px">统计更新时间：${dateText(new Date().toISOString())}</div></section><section class="panel"><div class="panel-head"><div><div class="panel-title">快捷操作</div><div class="panel-sub">常用管理入口</div></div></div><div class="quick-grid"><button class="quick-card" data-action="open-generate" ${ownerOnly()?'':'disabled'}><i>✳</i><b>生成授权码</b><span>批量创建新授权</span></button><button class="quick-card" data-page="licenses"><i>▤</i><b>授权码列表</b><span>搜索、筛选与状态管理</span></button><button class="quick-card" data-page="products"><i>◈</i><b>产品管理</b><span>维护接入产品信息</span></button><button class="quick-card" data-page="logs"><i>≋</i><b>操作日志</b><span>追溯管理员操作</span></button></div></section></div>`;
+  }
+  async function loadLicenses() {
+    const q = new URLSearchParams({page:String(state.licensePage),page_size:'20'});
+    if (state.filters.status) q.set('status',state.filters.status);
+    if (state.filters.hint) q.set('hint',state.filters.hint);
+    if (state.filters.product_code) q.set('product_code',state.filters.product_code);
+    const data = await api(`/api/admin/licenses?${q.toString()}`);
+    state.licenses = data.licenses || []; state.licenseTotal = Number(data.total || 0);
+  }
+  function renderLicenses() {
+    const rows = state.licenses.map(row => {
+      const st = statusInfo(row);
+      const actions = [];
+      if (row.status === 'disabled') actions.push(`<button class="btn small" data-action="restore" data-id="${esc(row.id)}" ${ownerOnly()?'':'disabled'}>恢复</button>`);
+      else actions.push(`<button class="btn small danger" data-action="disable" data-id="${esc(row.id)}" ${ownerOnly()?'':'disabled'}>禁用</button>`);
+      if (row.device_bound_at || row.activated_at) actions.push(`<button class="btn small" data-action="reset-device" data-id="${esc(row.id)}" ${ownerOnly()?'':'disabled'}>重置设备</button>`);
+      return `<tr><td class="code-cell">${esc(row.code_hint || '—')}<div style="font:9px ui-monospace;color:#a3acba;margin-top:4px">${esc(String(row.id || '').slice(0,8))}…</div></td><td><span class="status-pill ${st.cls}">${st.label}</span></td><td>${dateText(row.device_bound_at)}</td><td>${dateText(row.activated_at)}</td><td>${dateText(row.expires_at)}</td><td>${dateText(row.created_at)}</td><td><div class="row-actions">${actions.join('')}</div></td></tr>`;
+    }).join('');
+    const totalPages = Math.max(1,Math.ceil(state.licenseTotal/20));
+    $('pageContent').innerHTML = pageHead('LICENSES / 02','授权码管理','按状态、产品或授权码末四位筛选；敏感授权码仅在创建成功时展示一次。',`<button class="primary" data-action="open-generate" ${ownerOnly()?'':'disabled'}>＋ 生成授权码</button>`)+ownerNotice()+
+      `<div class="panel"><div class="toolbar"><input id="licenseHint" maxlength="4" placeholder="授权码末四位" value="${esc(state.filters.hint)}"><select id="licenseStatus"><option value="">全部状态</option><option value="unused" ${state.filters.status==='unused'?'selected':''}>待激活</option><option value="active" ${state.filters.status==='active'?'selected':''}>已激活</option><option value="disabled" ${state.filters.status==='disabled'?'selected':''}>已禁用</option></select><input id="licenseProduct" maxlength="12" placeholder="产品代码，例如 WHTM" value="${esc(state.filters.product_code)}"><button class="btn" data-action="filter-licenses">筛选</button><button class="btn" data-action="clear-license-filter">清除</button><span class="spacer"></span><span class="panel-sub">共 ${state.licenseTotal} 条记录</span></div><div class="table-wrap"><table><thead><tr><th>授权标识</th><th>状态</th><th>设备绑定时间</th><th>首次激活</th><th>有效期至</th><th>创建时间</th><th>管理操作</th></tr></thead><tbody>${rows || '<tr><td colspan="7"><div class="empty">没有找到匹配的授权记录</div></td></tr>'}</tbody></table></div><div class="pagination"><span>第 ${state.licensePage} / ${totalPages} 页</span><div><button class="btn" data-action="license-prev" ${state.licensePage<=1?'disabled':''}>上一页</button> <button class="btn" data-action="license-next" ${state.licensePage>=totalPages?'disabled':''}>下一页</button></div></div></div>`;
+  }
+  function renderProducts() {
+    const cards = state.products.map(p => `<article class="product-card"><div class="product-top"><span class="product-code">${esc(p.code)}</span><span class="status-pill ${p.status==='active'?'active':'disabled'}">${p.status==='active'?'运行中':'已停用'}</span></div><h3>${esc(p.name)}</h3><p>${esc(p.description || '暂无产品描述')}</p><div class="product-meta"><span>更新于 ${dateText(p.updated_at || p.created_at)}</span><button class="btn small" data-action="edit-product" data-code="${esc(p.code)}" ${ownerOnly()?'':'disabled'}>编辑产品</button></div></article>`).join('');
+    $('pageContent').innerHTML = pageHead('PRODUCTS / 03','产品管理','维护接入 HSL 授权中心的产品代码、名称、说明与启用状态。',`<button class="primary" data-action="new-product" ${ownerOnly()?'':'disabled'}>＋ 新建产品</button>`)+ownerNotice()+`<div class="grid product-grid">${cards || '<div class="panel empty">暂无产品</div>'}</div>`;
+  }
+  async function loadLogs() {
+    const q = new URLSearchParams({page:String(state.logPage),page_size:'20'});
+    const data = await api(`/api/admin/logs?${q.toString()}`);
+    state.logs = data.logs || []; state.logTotal = Number(data.total || 0);
+  }
+  function renderLogs() {
+    const rows = state.logs.map(row => `<tr><td>${dateText(row.created_at)}</td><td class="log-action">${esc(row.action)}</td><td>${esc(row.target_type || '—')}</td><td class="code-cell">${esc(row.target_id || '—')}</td><td>${esc(row.actor_user_id || '系统 / 用户')}</td><td>${esc(JSON.stringify(row.details || {}))}</td></tr>`).join('');
+    const totalPages = Math.max(1,Math.ceil(state.logTotal/20));
+    $('pageContent').innerHTML = pageHead('AUDIT LOG / 04','操作日志','记录授权码生成、禁用、恢复、设备重置及产品维护等操作。',`<button class="btn" data-action="refresh-page">↻ 刷新日志</button>`)+`<div class="panel"><div class="panel-head"><div><div class="panel-title">审计记录</div><div class="panel-sub">第 ${state.logPage} 页 · 共 ${state.logTotal} 条</div></div><span class="status-pill active">AUDIT TRAIL</span></div><div class="table-wrap"><table><thead><tr><th>时间</th><th>操作</th><th>对象类型</th><th>对象标识</th><th>操作者 UID</th><th>操作详情</th></tr></thead><tbody>${rows || '<tr><td colspan="6"><div class="empty">暂无操作日志</div></td></tr>'}</tbody></table></div><div class="pagination"><span>第 ${state.logPage} / ${totalPages} 页</span><div><button class="btn" data-action="log-prev" ${state.logPage<=1?'disabled':''}>上一页</button> <button class="btn" data-action="log-next" ${state.logPage>=totalPages?'disabled':''}>下一页</button></div></div></div>`;
+  }
+  function renderSettings() {
+    $('pageContent').innerHTML = pageHead('SETTINGS / 05','连接与安全','查看当前连接配置与上线前必须完成的安全检查。')+
+      `<div class="grid settings-grid"><section class="settings-item"><h3>API 服务地址</h3><p>后台当前连接的 HTTP 云函数路径。可在登录页修改；此地址不是密钥，可以公开。</p><div class="code-block">${esc(state.apiBase)}</div><p style="margin-top:12px">环境 ID：${ENV_ID}</p><button class="btn" data-action="back-login">返回登录页修改地址</button></section><section class="settings-item"><h3>当前管理员身份</h3><p>身份信息由 CloudBase Token 和服务端 admin_users 表共同验证。</p><div class="code-block">UID：${esc(state.admin?.uid || '')}<br>角色：${esc(state.admin?.role || '')}<br>显示名称：${esc(state.admin?.display_name || '')}</div></section><section class="settings-item"><h3>前端密钥策略</h3><p>公开仓库仅保存 HTML、CSS、JavaScript 与 API 地址。数据库 API Key、HMAC Secret 不应进入浏览器。</p><div class="notice success">当前页面没有内嵌 CLOUDBASE_APIKEY、LICENSE_HMAC_SECRET 或 DEVICE_HMAC_SECRET。</div></section><section class="settings-item"><h3>正式上线检查</h3><p>请将 GitHub Pages 的 Origin 添加到 CloudBase 安全来源，并将其加入云函数 ALLOWED_ORIGINS。CORS 不是身份认证的替代品。</p><div class="code-block">https://humanslicelaboratory.github.io</div><p style="margin-top:10px">建议同时启用登录失败限制、接口限流并定期检查审计日志。</p></section></div>`;
+  }
+  function renderLoadErrorSafe(error) { renderLoadError(error); }
+
+  function openModal(title, body) {
+    $('modalContent').innerHTML = `<div class="modal-head"><h3>${title}</h3><button class="modal-close" type="button" data-action="close-modal" aria-label="关闭">×</button></div><div class="modal-body">${body}</div>`;
+    modal.showModal();
+  }
+  function closeModal() { if (modal.open) modal.close(); }
+  function openGenerateModal() {
+    if (!ownerOnly()) return toast('当前账号没有 owner 写入权限','error');
+    const options = state.products.filter(p=>p.status==='active').map(p=>`<option value="${esc(p.code)}">${esc(p.code)} · ${esc(p.name)}</option>`).join('');
+    openModal('生成授权码',`<form id="generateForm"><div class="notice">授权码只在创建成功后显示一次。请在关闭窗口前复制并妥善交付给用户；数据库只保存 HMAC 摘要。</div><div class="field"><label>所属产品</label><select name="product_code" required>${options || '<option value="">没有启用中的产品</option>'}</select></div><div class="field"><label>生成数量</label><input name="count" type="number" min="1" max="50" value="1" required></div><div class="field"><label>有效期（天）</label><input name="expires_in_days" type="number" min="1" max="3650" value="365" required><small>当前接口支持 1–3650 天；生成后不可在此界面修改。</small></div><div class="field"><label>管理员备注</label><textarea name="admin_note" rows="2" maxlength="500" placeholder="例如：订单编号 / 测试批次 / 客户备注"></textarea></div><div class="modal-foot"><button class="btn" type="button" data-action="close-modal">取消</button><button class="primary" type="submit" ${options?'':'disabled'}>确认生成</button></div></form>`);
+    $('generateForm').addEventListener('submit',generateLicenses);
+  }
+  async function generateLicenses(event) {
+    event.preventDefault(); const form = event.currentTarget; const submit = form.querySelector('[type="submit"]'); setBusy(submit,true,'正在生成…');
+    const data = new FormData(form);
+    try {
+      const result = await api('/api/admin/licenses/generate',{method:'POST',body:{product_code:data.get('product_code'),count:Number(data.get('count')),expires_in_days:Number(data.get('expires_in_days')),admin_note:data.get('admin_note')}});
+      const generated = result.licenses || [];
+      const items = generated.map((item,i)=>`<div class="generated-code"><code>${esc(item.code)}</code><button class="btn small" type="button" data-action="copy-code" data-code="${esc(item.code)}">复制</button></div>`).join('');
+      openModal('授权码已生成',`<div class="notice success"><strong>创建成功。</strong>以下明文授权码只在本次响应中展示。请立即复制并保存到安全的交付渠道。</div><div class="generated-list">${items}</div><div class="modal-foot"><button class="btn" type="button" data-action="close-modal">关闭</button><button class="primary" type="button" data-action="copy-all-codes">复制全部</button></div>`);
+      $('modalContent').dataset.allCodes = generated.map(x=>x.code).join('\n');
+      toast(`成功生成 ${generated.length} 枚授权码`); try { await loadLicensesIfCurrent(); } catch (refreshError) { toast(`授权码已生成，但列表刷新失败：${refreshError.message}`,'error'); }
+    } catch(error) { toast(`生成失败：${error.message}`,'error'); setBusy(submit,false); }
+  }
+  async function loadLicensesIfCurrent() { if (state.page==='licenses') { await loadLicenses(); renderLicenses(); } if (state.page==='dashboard') { const d=await api('/api/admin/dashboard');state.stats=d.stats||{};renderDashboard(); } }
+  async function licenseAction(action,id) {
+    if (!ownerOnly()) return toast('当前账号没有 owner 写入权限','error');
+    const labels = {disable:'禁用授权码',restore:'恢复授权码','reset-device':'重置设备绑定'};
+    const messages = {disable:'禁用后，当前绑定设备将无法通过授权验证。',restore:'恢复后，若原设备绑定仍存在，原设备可重新使用。', 'reset-device':'此操作会清除当前设备绑定与激活时间，旧设备将失去授权；授权码会回到待激活状态。'};
+    if (!confirm(`${labels[action]}？\n\n${messages[action]}\n\n仅对当前选中的授权记录执行。`)) return;
+    try {
+      const result = await api(`/api/admin/licenses/${encodeURIComponent(id)}/${action}`,{method:'POST'});
+      toast(result.message || `${labels[action]}成功`);
+      await loadLicenses(); renderLicenses();
+    } catch(error) { toast(`${labels[action]}失败：${error.message}`,'error'); }
+  }
+  function openProductModal(product=null) {
+    if (!ownerOnly()) return toast('当前账号没有 owner 写入权限','error');
+    const editing = !!product;
+    openModal(editing?'编辑产品':'新建产品',`<form id="productForm"><div class="field"><label>产品代码</label><input name="code" maxlength="12" pattern="[A-Za-z0-9]{3,12}" value="${esc(product?.code || '')}" ${editing?'readonly':''} required placeholder="例如 WHTM"></div><div class="field"><label>产品名称</label><input name="name" maxlength="120" value="${esc(product?.name || '')}" required></div><div class="field"><label>产品描述</label><textarea name="description" rows="3" maxlength="1000">${esc(product?.description || '')}</textarea></div>${editing?`<div class="field"><label>产品状态</label><select name="status"><option value="active" ${product.status==='active'?'selected':''}>启用</option><option value="disabled" ${product.status==='disabled'?'selected':''}>停用</option></select></div>`:''}<div class="modal-foot"><button class="btn" type="button" data-action="close-modal">取消</button><button class="primary" type="submit">${editing?'保存修改':'创建产品'}</button></div></form>`);
+    $('productForm').addEventListener('submit',async e=>{
+      e.preventDefault();const f=e.currentTarget;const b=f.querySelector('[type="submit"]');setBusy(b,true,'正在保存…');const d=new FormData(f);
+      const body={name:d.get('name'),description:d.get('description')};
+      try {
+        if(editing){body.status=d.get('status');await api(`/api/admin/products/${encodeURIComponent(product.code)}`,{method:'PATCH',body});}
+        else {body.code=String(d.get('code')).toUpperCase();await api('/api/admin/products',{method:'POST',body});}
+        closeModal();const result=await api('/api/admin/products');state.products=result.products||[];renderProducts();toast(editing?'产品信息已更新':'产品创建成功');
+      }catch(error){toast(`保存失败：${error.message}`,'error');setBusy(b,false);}
+    });
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); toast('已复制到剪贴板'); }
+    catch { const area=document.createElement('textarea');area.value=text;document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();toast(ok?'已复制到剪贴板':'复制失败，请手动选择文本',ok?'':'error'); }
+  }
+  async function handleAction(action,el) {
+    if (action==='refresh-page') return loadPage(state.page);
+    if (action==='open-generate') { if (!state.products.length) {const d=await api('/api/admin/products');state.products=d.products||[];} return openGenerateModal(); }
+    if (action==='close-modal') return closeModal();
+    if (action==='copy-code') return copyText(el.dataset.code || '');
+    if (action==='copy-all-codes') return copyText($('modalContent').dataset.allCodes || '');
+    if (['disable','restore','reset-device'].includes(action)) return licenseAction(action,el.dataset.id);
+    if (action==='filter-licenses') { state.filters.hint=$('licenseHint').value.trim().toUpperCase();state.filters.status=$('licenseStatus').value;state.filters.product_code=$('licenseProduct').value.trim().toUpperCase();state.licensePage=1;await loadLicenses();return renderLicenses(); }
+    if (action==='clear-license-filter') {state.filters={status:'',hint:'',product_code:''};state.licensePage=1;await loadLicenses();return renderLicenses();}
+    if (action==='license-prev') {state.licensePage=Math.max(1,state.licensePage-1);await loadLicenses();return renderLicenses();}
+    if (action==='license-next') {state.licensePage++;await loadLicenses();return renderLicenses();}
+    if (action==='log-prev') {state.logPage=Math.max(1,state.logPage-1);await loadLogs();return renderLogs();}
+    if (action==='log-next') {state.logPage++;await loadLogs();return renderLogs();}
+    if (action==='new-product') return openProductModal();
+    if (action==='edit-product') {const p=state.products.find(x=>x.code===el.dataset.code);if(p)openProductModal(p);return;}
+    if (action==='back-login') return logout();
+  }
+
+  document.addEventListener('click',async event=>{
+    const nav=event.target.closest('[data-page]');
+    if (nav && nav.dataset.page) { event.preventDefault(); try {await loadPage(nav.dataset.page);} catch(error){toast(error.message,'error');} return; }
+    const actionEl=event.target.closest('[data-action]');
+    if (actionEl) { event.preventDefault(); try { await handleAction(actionEl.dataset.action,actionEl); } catch(error){toast(error.message,'error');} }
+  });
+  $('loginForm').addEventListener('submit',login);
+  $('testApiButton').addEventListener('click',async()=>{
+    const b=$('testApiButton');const base=cleanBase($('apiBaseInput').value);
+    if(!/^https:\/\//i.test(base)){setLoginMessage('API 地址必须以 https:// 开头。',true);return;}
+    setBusy(b,true,'测试中…');
+    try{const r=await readResponse(await fetch(`${base}/health`,{headers:{'Accept':'application/json'},cache:'no-store'}));setLoginMessage(`连接成功：${r.service || 'HSL License Center'} · v${r.version || 'unknown'} · ${r.status || 'running'}`);}
+    catch(e){setLoginMessage(`连接失败：${authErrorMessage(e)} 请检查 API 路径和 CORS 配置。`,true);}
+    finally{setBusy(b,false);}
+  });
+  $('logoutButton').addEventListener('click',logout);
+  $('apiBaseInput').value = cleanBase(localStorage.getItem(STORAGE_KEY) || DEFAULT_API_BASE);
+  modal.addEventListener('click',event=>{if(event.target===modal)closeModal();});
+})();
+</script>
+</body>
+</html>
